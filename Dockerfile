@@ -1,17 +1,21 @@
 FROM node:12.18.3
 
+ENV PORT 3000
+
+# Create app directory
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-ENV MONGO_URL "mongodb://mongo:27017"
-ENV DB_NAME points
-ENV COL_NAME dataPoints
-
+# Installing dependencies
+COPY package*.json /usr/src/app/
 RUN npm install
 
-COPY . .
+# Copying source files
+COPY . /usr/src/app
 
+# Building app
 RUN npm run build
+EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+# Running the app
+CMD "npm" "run" "dev"
